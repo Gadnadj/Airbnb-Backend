@@ -18,10 +18,6 @@ app.use(cors({
 
 mongoose.connect(process.env.MONGO_URL);
 
-app.get('/test', (req, res) => {
-    res.json('test ok');
-});
-
 // ---------------------Register---------------------
 app.post('/register', async (req, res) => {
     const { name, email, password } = req.body;
@@ -39,6 +35,23 @@ app.post('/register', async (req, res) => {
 
 })
 // --------------------------------------------------
+
+
+// ---------------------Login---------------------
+app.post('/login', async (req, res) => {
+    console.log(req.body + 'fsfdsfdsf');
+    const { email, password } = req.body;
+    console.log(email + 'im dont have any email');
+    const userDoc = await User.findOne({ email });
+    if (userDoc) {
+        res.json('found')
+    }
+    else {
+        res.json('not found');
+    }
+})
+
+//------------------------------------------------
 
 app.listen(4000);
 
