@@ -9,13 +9,14 @@ const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = 'dsfdffgdsg4g45sdg1dsg2dsg';
 const CookieParser = require('cookie-parser');
 const imageDownloader = require('image-downloader');
+const multer = require('multer');
 
 const app = express();
 
 //middleware
 app.use(express.json());
 app.use(CookieParser());
-app.use('/uploads', express.static(__dirname+'/uploads'));
+app.use('/uploads', express.static(__dirname + '/uploads'));
 app.use(cors({
     credentials: true,
     origin: 'http://localhost:5173',
@@ -87,7 +88,7 @@ app.get('/profile', (req, res) => {
 })
 // -------------------------------------------------
 
-// ---------------------upload photos---------------------
+// ---------------------upload photos with link---------------------
 app.post('/upload-by-link', async (req, res) => {
     const { link } = req.body;
     const newName = 'photo' + Date.now() + '.jpg'
@@ -97,7 +98,15 @@ app.post('/upload-by-link', async (req, res) => {
     })
     res.json(newName);
 })
-// -------------------------------------------------------
+// -----------------------------------------------------------------
+
+// ---------------------upload photos on computer---------------------
+const photosMiddleware = multer({ dest: 'upload' });
+app.post('/upload', photosMiddleware.array('photos', 100), (req, res) => {
+    res.json(req.files)
+})
+// -------------------------------------------------------------------
+
 
 
 
