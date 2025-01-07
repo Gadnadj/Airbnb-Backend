@@ -7,10 +7,12 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = 'dsfdffgdsg4g45sdg1dsg2dsg';
+const CookieParser = require('cookie-parser');
 
 const app = express();
 
 app.use(express.json());
+app.use(CookieParser());
 
 
 app.use(cors({
@@ -60,6 +62,13 @@ app.post('/login', async (req, res) => {
     }
 })
 //------------------------------------------------
+
+// ---------------------profile---------------------
+app.get('/profile', (req, res) => {
+    const { token } = req.cookies;
+    res.json({ token });
+})
+// -------------------------------------------------
 
 app.listen(4000);
 
