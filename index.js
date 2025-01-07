@@ -63,6 +63,13 @@ app.post('/login', async (req, res) => {
 })
 //------------------------------------------------
 
+// ---------------------logout---------------------
+app.post('/logout', (req, res) => {
+    res.cookie('token', '').json(true);
+})
+// ------------------------------------------------
+
+
 // ---------------------profile---------------------
 app.get('/profile', (req, res) => {
     const { token } = req.cookies;
