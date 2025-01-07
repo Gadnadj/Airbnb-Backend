@@ -12,10 +12,10 @@ const imageDownloader = require('image-downloader');
 
 const app = express();
 
+//middleware
 app.use(express.json());
 app.use(CookieParser());
-
-
+app.use('/uploads', express.static(__dirname+'/uploads'));
 app.use(cors({
     credentials: true,
     origin: 'http://localhost:5173',
