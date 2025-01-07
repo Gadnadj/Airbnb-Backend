@@ -8,6 +8,7 @@ require('dotenv').config();
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = 'dsfdffgdsg4g45sdg1dsg2dsg';
 const CookieParser = require('cookie-parser');
+const imageDownloader = require('image-downloader');
 
 const app = express();
 
@@ -85,6 +86,18 @@ app.get('/profile', (req, res) => {
     }
 })
 // -------------------------------------------------
+
+// ---------------------upload photos---------------------
+app.post('/upload-by-link', async (req, res) => {
+    const { link } = req.body;
+    await imageDownloader.image({
+        url: link,
+        dest: __dirname + '/uploads'
+    })
+})
+// -------------------------------------------------------
+
+
 
 app.listen(4000);
 
