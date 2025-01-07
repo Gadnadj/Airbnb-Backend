@@ -10,6 +10,7 @@ const jwtSecret = 'dsfdffgdsg4g45sdg1dsg2dsg';
 const CookieParser = require('cookie-parser');
 const imageDownloader = require('image-downloader');
 const multer = require('multer');
+const fs = require('fs');
 
 const app = express();
 
@@ -101,9 +102,18 @@ app.post('/upload-by-link', async (req, res) => {
 // -----------------------------------------------------------------
 
 // ---------------------upload photos on computer---------------------
-const photosMiddleware = multer({ dest: 'upload' });
+const photosMiddleware = multer({ dest: 'uploads' });
 app.post('/upload', photosMiddleware.array('photos', 100), (req, res) => {
-    res.json(req.files)
+    const uploadedFiles = []
+    for (let i = 0; i < req.files.length; i++) {
+        const { path, originalname } = req.files[i];
+        const parts = originalname.split('.');
+        const ext = parts[parts.length - 1];
+        const newPath = path + '.' + ext;
+        fs.renameSync(path, newPath);
+        uploadedFiles.push(newPath.replace('uploads/', ''));
+    }
+    res.json(uploadedFiles);
 })
 // -------------------------------------------------------------------
 
