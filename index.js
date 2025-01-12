@@ -138,14 +138,15 @@ app.post('/places', (req, res) => {
             checkIn,
             checkOut,
             maxGuests,
+            price,
         })
         res.json(placeDoc);
     });
 })
 // ------------------------------------------------------
 
-// ---------------------get all places---------------------
-app.get('/places', (req, res) => {
+// ---------------------get all places for specific user---------------------
+app.get('/user-places', (req, res) => {
     const { token } = req.cookies;
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
         const { id } = userData;
@@ -165,7 +166,7 @@ app.get('/places/:id', async (req, res) => {
 app.put('/places', async (req, res) => {
     const { token } = req.cookies;
     const { id, title, address, addedPhotos, description, perks,
-        extraInfo, checkIn, checkOut, maxGuests,
+        extraInfo, checkIn, checkOut, maxGuests, price,
     } = req.body;
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
         if (err) throw err;
@@ -181,6 +182,7 @@ app.put('/places', async (req, res) => {
                 checkIn,
                 checkOut,
                 maxGuests,
+                price,
             })
             await placeDoc.save();
             res.json('ok')
@@ -188,6 +190,13 @@ app.put('/places', async (req, res) => {
     })
 })
 // -----------------------------------------------------------
+
+// ---------------------get all places---------------------
+app.get('/places', async (req, res) => {
+    res.json(await Place.find());
+})
+// --------------------------------------------------------
+
 
 
 
