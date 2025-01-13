@@ -3,6 +3,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const User = require('./models/User');
 const Place = require('./models/Place');
+const Booking = require('./models/Booking');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
@@ -196,6 +197,31 @@ app.get('/places', async (req, res) => {
     res.json(await Place.find());
 })
 // --------------------------------------------------------
+
+// ---------------------booking a place---------------------
+app.post('/booking', async (req, res) => {
+    const { place, checkIn, checkOut, numOfGuests, name, phone, price, numOfNights
+    } = req.body
+    try {
+        const BookingDoc = await Booking.create({
+            place,
+            checkIn,
+            checkOut,
+            numOfGuests,
+            name,
+            phone,
+            price,
+            numOfNights
+        })
+        res.json(BookingDoc);
+    }
+    catch (e) {
+        res.status(422).json(e);
+    }
+})
+// ---------------------------------------------------------
+
+
 
 
 
